@@ -1,0 +1,25 @@
+* {
+  font-family: 'Raleway', sans-serif;
+}
+
+body {
+  background: url(../background.png);
+  background-repeat: repeat;
+}
+
+.container {
+  text-align: center;
+}
+
+h1 {
+  font-weight: 900;
+}
+
+.textOverlay {
+  opacity: .5;
+
+}
+
+img {
+  transform: all .5s linear;
+}

@@ -10383,11 +10383,11 @@ select {
   }
 }
 
-.slider {
+/*.slider {
   position: relative;
   height: 400px;
   width: 100%;
-}
+}*/
 
 .slider.fullscreen {
   height: 100%;
@@ -10408,7 +10408,7 @@ select {
   bottom: 30px;
 }
 
-.slider .slides {
+/*.slider .slides {
   background-color: #9e9e9e;
   margin: 0;
   height: 400px;
@@ -10423,27 +10423,28 @@ select {
   width: 100%;
   height: inherit;
   overflow: hidden;
-}
+}*/
 
 .slider .slides li img {
   height: 100%;
   width: 100%;
   background-size: cover;
   background-position: center;
+/*  position: absolute;*/
 }
 
-.slider .slides li .caption {
+/*.slider .slides li .caption {
   color: #fff;
   position: absolute;
   top: 15%;
   left: 15%;
   width: 70%;
   opacity: 0;
-}
+}*/
 
-.slider .slides li .caption p {
+/*.slider .slides li .caption p {
   color: #e0e0e0;
-}
+}*/
 
 .slider .slides li.active {
   z-index: 2;
@@ -10458,7 +10459,7 @@ select {
   margin: 0;
 }
 
-.slider .indicators .indicator-item {
+/*.slider .indicators .indicator-item {
   display: inline-block;
   position: relative;
   cursor: pointer;
@@ -10468,11 +10469,11 @@ select {
   background-color: #e0e0e0;
   transition: background-color .3s;
   border-radius: 50%;
-}
+}*/
 
-.slider .indicators .indicator-item.active {
+/*.slider .indicators .indicator-item.active {
   background-color: #4CAF50;
-}
+}*/
 
 .carousel {
   overflow: hidden;

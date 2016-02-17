@@ -3,57 +3,75 @@
 //= require materialize
 
 $(document).ready(function() {
-// 'https://api.flickr.com/services/rest/?method=flickr.photos.search&format=json&api_key=74c748016b93d02d0bf3fb091373a1ba&tags=lighthouse'
 
-var search_term = "lighthouse";
-var api_key = "c30533120fb670a6299cf3c1b93c41c8";
-var url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&format=json&api_key="+api_key+"&tags="+search_term;
+  var search_term = "lighthouse";
+  var api_key = "c30533120fb670a6299cf3c1b93c41c8";
+  var imgURL = "https://api.flickr.com/services/rest/?method=flickr.photos.search&format=json&api_key="+api_key+"&tags="+search_term;
 
-var handlers = {
-  addImageToDOM: function(item) {
-    var title = item.title;
-    var URL = "https://farm"+item.farm+".staticflickr.com/"+item.server+"/"+item.id+"_"+item.secret+".jpg";
-    var photoHTML = "<img src='https://farm"+item.farm+".staticflickr.com/"+item.server+"/"+item.id+"_"+item.secret+".jpg'>";
+  function getImgLikesURL(photoId) {
+    return imgLikes = "https://api.flickr.com/services/rest/?method=flickr.photos.getFavorites&api_key="+api_key+"&photo_id="+photoId+"&format=json"
+  };
 
-    var $image = $(photoHTML);
+  var handlers = {
+    addImageToDOM: function(item, callback) {
+      var title = item.title;
+      var imgLink = "https://farm"+item.farm+".staticflickr.com/"+item.server+"/"+item.id+"_"+item.secret+".jpg";
+      var photoHTML = "<img src='https://farm"+item.farm+".staticflickr.com/"+item.server+"/"+item.id+"_"+item.secret+".jpg'>";
+      var $image = $(photoHTML);
 
-    // $(".slider").find(".slides").each(function() {
-    //   var li = $("<li>");
-    //   $image.appendTo(li);
-    //   li.appendTo(".slides");
-    // });
+      var $li = $("<li>");
+      $li.attr('id', 'list_item_' + item.id);
+      var $div = $("<div>");
+      $image.appendTo($li);
+      $li.appendTo(".slides");
+      $div.addClass("caption").appendTo($li);
+      $("<h5>").text(title).addClass("caption h5").appendTo($div);
 
-    var $li = $("<li>");
-    var $div = $("<div>");
-    $image.appendTo($li);
-    $li.appendTo(".slides");
-    // $div.text(title).addClass("caption");
-    // $div.appendTo(li);
-    $div.addClass("caption").appendTo($li);
-    $("<a href="+URL+">").text(title).addClass("caption h5").appendTo($div);
+      callback();
+    }
   }
-}
 
-$.ajax({
-  url: url,
-  jsonp: "jsoncallback",
-  dataType: "jsonp",
-  success: function(data) {
+  var getImgLikes = function (){
+    $.ajax({
+      url: imgLikes,
+      jsonp: "jsoncallback",
+      dataType: "jsonp",
+      success: function(data) {
+        var imgId = data.photo.id;
+        var likeLength = data.photo.person.length++;
+        $('#list_item_' + imgId + ' div.caption').append("<h5 class='h5 caption'>"
+        + likeLength 
+        + "<i class='tiny material-icons'>favorite</i></h5>");
+      },
+
+      error: function(message){
+        alert('Try again!!');
+      }
+    });
+  };
+
+  $.ajax({
+    url: imgURL,
+    jsonp: "jsoncallback",
+    dataType: "jsonp",
+    success: function(data) {
+              
+      var photos = data.photos.photo.slice(0, 9);
       
-      var c=1;
-      $.each(data.photos.photo, function(i,item) {
-        if (c<=10){
-          handlers.addImageToDOM(item)
-          c+=1;
-        };
+      $.each(photos, function(i,item) {
+        var imgLikeURL = getImgLikesURL(item.id); 
+
+        handlers.addImageToDOM(item, function() {
+          getImgLikes();  
+        });
+              
       });
-    $('.slider').slider();
-  },
+      $('.slider').slider();
+    },
 
-  error: function(message){
-    alert('Try again!!');
-  }
-});
+    error: function(message){
+      alert('Try again!!');
+    }
+  });
 
-// See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
 });
